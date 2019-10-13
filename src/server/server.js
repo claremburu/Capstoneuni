@@ -7,7 +7,7 @@ const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-mongoose.connect('mongodb://localhost:27017/reactFullstack', { useCreateIndex: true, useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect('mongodb://localhost:27017/capstoneuni', { useCreateIndex: true, useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('DB connected sucessfully'))
   .catch(err => console.log(err));
 
