@@ -1,34 +1,14 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { Route, Link, BrowserRouter as Router } from 'react-router-dom';
-import App from './App';
-import User from './user';
-import Auth from './auth';
-import notFound from './404';
+import React from "react";
+import ReactDOM, { render } from "react-dom";
 
-const routing = (
-    <Router>
-         <ul>
-        <li>
-          <Link to="/">Home</Link>
-        </li>
-        <li>
-          <Link to="/user">User</Link>
-        </li>
-        <li>
-          <Link to="/auth">Register/Login</Link>
-        </li>
-      </ul>
-      <div>
-          <switch>
-        <Route exact path="/" component={App} />
-        <Route path="/user/:id" component={User} />
-        <Route path="/auth" component={Register/Login} />
-        <Route component={Notfound} />
-        </switch>
-      </div>
-    </Router>
-  )
-ReactDOM.render(routing, document.getElementById('root'))
+import { BrowserRouter as Router } from "react-router-dom";
+import App from "./App";
 
-// ReactDOM.render(<App />, document.getElementById('root'));
+// please do not add any other files in this component
+
+render(
+  <Router>
+    <App />
+  </Router>,
+  document.getElementById("root")
+); // this  renders and paste the compoenent to the DOM
