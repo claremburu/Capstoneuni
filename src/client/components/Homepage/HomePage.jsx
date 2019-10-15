@@ -4,7 +4,7 @@ import { Switch, Route, Link } from "react-router-dom";
 
 import "../../css/styles.css";
 
-const Dashboard = () => {
+const HomePage = () => {
   // I will do the functionality over here
 
   return (
@@ -66,4 +66,4 @@ const Dashboard = () => {
     </div>
   );
 };
-export default Dashboard;
+export default HomePage;
