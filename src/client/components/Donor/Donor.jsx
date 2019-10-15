@@ -1,18 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import './css/materialize.min.css';
+import '../../css/materialize.min.css';
 import { Button, Card, Row, Col, Container } from 'react-materialize';
-// import Card from './card';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { Switch, Route, Link } from "react-router-dom";
 
-const user = () => {
-  // I will do the functionality over here
 
+export default function Donor() {
   return (
     <div>
       <div>
-  <p>
-    <title>Inter-Uni</title>
-    <link rel="stylesheet" href="/src/client/css/materialize.min.css" />
-  </p>
+  <title>Inter-Uni</title>
+  <link rel="stylesheet" href="../../css/materialize.min.css" />
   <nav className="blue">
     <div className="nav-wrapper">
       <a href="/" className="brand-logo">
@@ -20,7 +18,7 @@ const user = () => {
       </a>
       <ul id="nav-mobile" className="right hide-on-med-and-down">
         <li>
-          <a href="user-dashboard.html">User</a>
+          <a href="donor-dashboard.html">Donor</a>
         </li>
       </ul>
     </div>
@@ -59,10 +57,10 @@ const user = () => {
         </div>
       </div>
       <form className="col s4 offset-s1">
-        <h3>Add Project</h3>
+        <h3>Add Advert</h3>
         <div className="row">
           <div className="input-field col s12">
-            <input id="title" type="email" className="validate" />
+            <input id="title" type="text" className="validate" />
             <label htmlFor="title">Title</label>
           </div>
         </div>
@@ -76,54 +74,43 @@ const user = () => {
             <label htmlFor="description">Description</label>
           </div>
         </div>
-        <span>File</span>
-        <input type="file" name="document" />
-        <input type="submit" />
+        <div className="row">
+          <div className="input-field col s12">
+            <input id="date" type="text" className="datepicker" />
+            <label htmlFor="title">Date</label>
+          </div>
+        </div>
+        {/* <div class="file-field input-field">
+						<div class="btn">
+							<span>File</span>
+							<input type="file" />
+						</div>
+						<div class="file-path-wrapper">
+							<input class="file-path validate" type="text" />
+						</div>
+					</div> */}
+        <button
+          id="add-project-btn"
+          type="button"
+          className="waves-effect waves-light btn"
+        >
+          Add Advert
+        </button>
+        <div>
+          <button
+            id="add-project-btn"
+            type="button"
+            className="waves-effect waves-light btn"
+          >
+            Funded Projects
+          </button>
+        </div>
       </form>
-      {/* <div class="file-field input-field">
-						<form method="POST" action="/submit-form">
-						<span>File</span>
-						<input type="file" name="document" />
-						<input type="submit" />
-					  </form>
-						
-						</div> */}
-      <div className="file-path-wrapper">
-        <input className="file-path validate" type="text" />
-      </div>
     </div>
-    <button
-      id="add-project-btn"
-      type="button"
-      className="waves-effect waves-light btn"
-    >
-      Add Project
-    </button>
-    <button
-      id="add-project-btn"
-      type="button"
-      className="waves-effect waves-light btn"
-    >
-      View Funding opportunities
-    </button>
-    <button
-      id="add-project-btn"
-      type="button"
-      className="waves-effect waves-light btn"
-    >
-      Apply for funding
-    </button>
   </div>
   {/* Compiled and minified JavaScript */}
-  <p />
 </div>;
 
-          </div>
-        );
-      }
-//     // }
-//     </div>
-
-//   // );
-// // };
-export default user;
+    </div>
+  );
+}

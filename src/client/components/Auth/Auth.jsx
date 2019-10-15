@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import './css/authstyles.css';
 import { Button, Card, Row, Col, Container } from 'react-materialize';
 
-const auth = () => {
-    return(
-        <div>
-            <div>
+export default function Auth() {
+  return (
+    <div>
+      <div>
   <title>Capstone Auth</title>
   {/*Custom Theme files*/}
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -13,7 +13,7 @@ const auth = () => {
   <meta name="keywords" content />
   {/* Custom Theme files */}
   <link
-    href="css/authstyles.css"
+    href="CSS/authstyles.css"
     rel="stylesheet"
     type="text/css"
     media="all"
@@ -116,12 +116,13 @@ const auth = () => {
     <p>
       {" "}
       © 2019 Capstone InterUni PM . All rights reserved | Design by{" "}
+      <a href="http://w3layouts.com/" target="_blank">
+        W3layouts
+      </a>
     </p>
   </div>
 </div>;
 
-        </div>
-
-    );
+    </div>
+  );
 }
-export default auth;
