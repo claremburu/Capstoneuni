@@ -1,8 +1,9 @@
+/* eslint-disable func-names */
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcryptjs');
 
 // Load User model
-const {} = require('');
+const { User } = require('../models/data');
 
 module.exports = function (passport) {
   passport.use(
@@ -10,6 +11,7 @@ module.exports = function (passport) {
       // Match user
       User.findOne({
         email
+      // eslint-disable-next-line consistent-return
       }).then((user) => {
         if (!user) {
           return done(null, false, { message: 'That email is not registered' });

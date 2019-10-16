@@ -1,8 +1,35 @@
+/* eslint-disable arrow-parens */
 /* eslint-disable quotes */
 import React from "react";
 import "../../css/materialize.min.css";
 
+import useForm from "../CustomHooks/CustomHooks";
+
 const UserDashboard = () => {
+  const { inputs, handleInputChange, handleSubmit } = useForm(saveData);
+
+  function addProject(data) {
+    fetch(`/api/user/project`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    })
+      .then(res => res.json())
+      .then(result => {
+        console.log(result);
+        if (data) alert(`Project added successfully`);
+        alert("unable add the Project");
+      })
+
+      .catch(err => {
+        console.log(err);
+        alert("unable add the Project");
+      });
+  }
+
+  function saveData() {
+    addProject(inputs);
+  }
   return (
     <div>
       <div>
@@ -51,11 +78,17 @@ const UserDashboard = () => {
                 </div>
               </div>
             </div>
-            <form className="col s4 offset-s1">
+            <form className="col s4 offset-s1" onSubmit={handleSubmit}>
               <h3>Add Project</h3>
               <div className="row">
                 <div className="input-field col s12">
-                  <input id="title" type="email" className="validate" />
+                  <input
+                    id="title"
+                    type="email"
+                    className="validate"
+                    name="title"
+                    onChange={handleInputChange}
+                  />
                   <label htmlFor="title">Title</label>
                 </div>
               </div>
@@ -64,14 +97,16 @@ const UserDashboard = () => {
                   <textarea
                     id="description"
                     className="materialize-textarea"
+                    onChange={handleInputChange}
+                    name="description"
                     defaultValue={""}
                   />
                   <label htmlFor="description">Description</label>
                 </div>
               </div>
-              <span>File</span>
+              {/* <span>File</span>
               <input type="file" name="document" />
-              <input type="submit" />
+              <input type="submit" /> */}
             </form>
             {/* <div class="file-field input-field">
 						<form method="POST" action="/submit-form">
@@ -89,6 +124,7 @@ const UserDashboard = () => {
             id="add-project-btn"
             type="button"
             className="waves-effect waves-light btn"
+            onClick={handleSubmit}
           >
             Add Project
           </button>

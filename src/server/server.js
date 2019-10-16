@@ -3,13 +3,23 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const News = require('./models/data');
 const passport = require('passport');
+const session = require('express-session');
 
 const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-mongoose.connect('mongodb://localhost:27017/capstoneuni', { useCreateIndex: true, useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log('DB connected sucessfully'))
+mongoose
+  .connect(
+    "mongodb+srv://clare:clare@cluster0-zbbh0.mongodb.net/test?retryWrites=true&w=majority",
+    {
+      useCreateIndex: true,
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    }
+  )
+  // eslint-disable-next-line quotes
+  .then(() => console.log("DB connected sucessfully"))
   .catch(err => console.log(err));
 
 app.use(express.static('dist'));
@@ -38,12 +48,10 @@ app.post('/api/register', (req, res) => {
     res.status(200).json({ data });
   });
 });
+app.use(express.static("dist"));
 
-app.get('/api/getUsername', (req, res) => {
-  News.find({}, (err, result) => {
-    if (err) throw err;
-    res.send(result);
-  });
-});
+app.use(`/api`, require("./routes/routes"));
 
-app.listen(process.env.PORT || 8080, () => console.log(`Listening on port ${process.env.PORT || 8080}!`));
+app.listen(process.env.PORT || 8080, () =>
+  console.log(`Listening on port ${process.env.PORT || 8080}!`)
+);
