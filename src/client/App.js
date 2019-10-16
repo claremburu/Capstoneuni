@@ -1,8 +1,9 @@
+/* eslint-disable quotes */
 import React from "react";
 import { Route, Switch } from "react-router-dom";
 
 import Dashboard from "./components/User/UserDashboard"; // this is one of the many componets that you are gonna render here
-import AboutPage from "./components/About/AboutPage";
+// import AboutPage from "./components/About/AboutPage";
 import PageNotfound from "./components/PageNotFound";
 import SignUp from "./components/SignUp/SignUp";
 import donorDashboard from "./components/Donor/DonorDashboard";
@@ -15,7 +16,7 @@ export default function App() {
       {/* this is the everall div of your website e.g with className = "container" */}
       <Switch>
         <Route exact path="/user-dashboard" component={Dashboard} />
-        <Route path="/about" component={AboutPage} />
+        {/* <Route path="/about" component={AboutPage} /> */}
         {/* <Route path="/login" component={Login} /> */}
         <Route path="/login-signup" component={SignUp} />
         <Route path="/donor-dashboard" component={donorDashboard} />
