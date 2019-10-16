@@ -1,7 +1,9 @@
-/* eslint-disable quotes */
-const express = require("express");
-const bodyParser = require("body-parser");
-const mongoose = require("mongoose");
+const express = require('express');
+const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+const News = require('./models/data');
+const passport = require('passport');
+const session = require('express-session');
 
 const app = express();
 
@@ -20,6 +22,32 @@ mongoose
   .then(() => console.log("DB connected sucessfully"))
   .catch(err => console.log(err));
 
+app.use(express.static('dist'));
+
+require('./config/passport')(passport);
+// Express session
+app.use(
+  session({
+    secret: 'secret',
+    resave: true,
+    saveUninitialized: true
+  })
+);
+
+// Passport middleware
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.post('/api/register', (req, res) => {
+  const { title, date, text } = req.body;
+  const newData = new News({ title, date, text });
+  newData.save({}, (err, data) => {
+    if (err) {
+      console.log(err);
+    }
+    res.status(200).json({ data });
+  });
+});
 app.use(express.static("dist"));
 
 app.use(`/api`, require("./routes/routes"));
