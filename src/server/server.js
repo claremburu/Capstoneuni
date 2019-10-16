@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const News = require('./models/data');
+const passport = require('passport');
 
 const app = express();
 
@@ -12,6 +13,20 @@ mongoose.connect('mongodb://localhost:27017/capstoneuni', { useCreateIndex: true
   .catch(err => console.log(err));
 
 app.use(express.static('dist'));
+
+require('./config/passport')(passport);
+// Express session
+app.use(
+  session({
+    secret: 'secret',
+    resave: true,
+    saveUninitialized: true
+  })
+);
+
+// Passport middleware
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.post('/api/register', (req, res) => {
   const { title, date, text } = req.body;
