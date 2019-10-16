@@ -4,9 +4,13 @@ import React from "react";
 import "../../css/materialize.min.css";
 
 import useForm from "../CustomHooks/CustomHooks";
+import useFetch from "../CustomHooks/useFetchHook";
 
 const UserDashboard = () => {
   const { inputs, handleInputChange, handleSubmit } = useForm(saveData);
+  const res = useFetch("/api/user/project", {});
+  const dayta = res.response;
+  console.log(dayta);
 
   function addProject(data) {
     fetch(`/api/user/project`, {
@@ -65,18 +69,23 @@ const UserDashboard = () => {
                   </div>
                 </div>
               </form>
-              <div className="col s12" id="projects-container">
-                <div className="card">
-                  <div className="card-content">
-                    <span className="card-title">Title</span>
-                    <p>
-                      I am a very simple card. I am good at containing small
-                      bits of information. I am convenient because I require
-                      little markup to use effectively.
-                    </p>
-                  </div>
-                </div>
-              </div>
+              {dayta &&
+                dayta.map(item => {
+                  return (
+                    <div
+                      className="col s12"
+                      id="projects-container"
+                      key={item._id}
+                    >
+                      <div className="card">
+                        <div className="card-content">
+                          <span className="card-title">{item.title}</span>
+                          <p>{item.description}</p>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
             </div>
             <form className="col s4 offset-s1" onSubmit={handleSubmit}>
               <h3>Add Project</h3>

@@ -20,21 +20,16 @@ const userSchema = new mongoose.Schema({
 
 const projectSchema = new mongoose.Schema({
   title: { type: String, required: true },
-  description: { type: String },
-  file: { type: String },
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User"
-  }
+  description: { type: String }
 });
 
 const donorSchema = new mongoose.Schema({
   title: { type: String, required: true },
   description: { type: String, required: true },
-  awardAmount: { type: Number, required: true },
+  awardAmount: { type: Number },
   applicationDeadline: { type: Date, required: true },
   qualifications: { type: String, required: true },
-  created_on: { type: Date, required: true }
+  createdOn: { type: Date, required: true }
 });
 
 const User = mongoose.model("User", userSchema);

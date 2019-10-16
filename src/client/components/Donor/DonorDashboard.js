@@ -1,7 +1,38 @@
-import React from "react";
+/* eslint-disable quotes */
+import React, { useEffect } from "react";
 import "../../css/materialize.min.css";
+import useForm from "../CustomHooks/CustomHooks";
+import useFetch from "../CustomHooks/useFetchHook";
 
 const DonorDashboard = () => {
+  const { inputs, handleInputChange, handleSubmit } = useForm(saveData);
+  const res = useFetch("/api/projects", {});
+
+  //console.log(res.response);
+
+  function addFunds(data) {
+    fetch(`/api/donor/funds`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    })
+      .then(res => res.json())
+      .then(result => {
+        console.log(result);
+        if (data) alert(`Project added successfully`);
+      })
+      .catch(err => {
+        console.log(err);
+        alert("unable add the Project");
+      });
+  }
+
+  function saveData() {
+    addFunds(inputs);
+  }
+
+  // fetching from the database to the state
+  const dayta = res.response;
   return (
     <div>
       <div>
@@ -39,24 +70,35 @@ const DonorDashboard = () => {
                   </div>
                 </div>
               </form>
-              <div className="col s12" id="projects-container">
-                <div className="card">
-                  <div className="card-content">
-                    <span className="card-title">Title</span>
-                    <p>
-                      I am a very simple card. I am good at containing small
-                      bits of information. I am convenient because I require
-                      little markup to use effectively.
-                    </p>
-                  </div>
-                </div>
-              </div>
+              {dayta &&
+                dayta.map(item => {
+                  return (
+                    <div
+                      className="col s12"
+                      id="projects-container"
+                      key={item._id}
+                    >
+                      <div className="card">
+                        <div className="card-content">
+                          <span className="card-title">{item.title}</span>
+                          <p>{item.description}</p>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
             </div>
-            <form className="col s4 offset-s1">
+            <form className="col s4 offset-s1" onSubmit={handleSubmit}>
               <h3>Add Advert</h3>
               <div className="row">
                 <div className="input-field col s12">
-                  <input id="title" type="text" className="validate" />
+                  <input
+                    id="title"
+                    type="text"
+                    className="validate"
+                    name="title"
+                    onChange={handleInputChange}
+                  />
                   <label htmlFor="title">Title</label>
                 </div>
               </div>
@@ -64,30 +106,59 @@ const DonorDashboard = () => {
                 <div className="input-field col s12">
                   <textarea
                     id="description"
+                    name="description"
+                    onChange={handleInputChange}
                     className="materialize-textarea"
-                    defaultValue={""}
+                    defaultValue=""
                   />
                   <label htmlFor="description">Description</label>
                 </div>
               </div>
+
               <div className="row">
                 <div className="input-field col s12">
-                  <input id="date" type="text" className="datepicker" />
-                  <label htmlFor="title">Date</label>
+                  <textarea
+                    id="qualifications"
+                    name="qualifications"
+                    onChange={handleInputChange}
+                    className="materialize-textarea"
+                    defaultValue=""
+                  />
+                  <label htmlFor="description">Qualifications</label>
                 </div>
               </div>
-              {/* <div class="file-field input-field">
-						<div class="btn">
-							<span>File</span>
-							<input type="file" />
-						</div>
-						<div class="file-path-wrapper">
-							<input class="file-path validate" type="text" />
-						</div>
-					</div> */}
+
+              <div className="row">
+                <div className="input-field col s12">
+                  <input
+                    type="date"
+                    id="applicationDeadline"
+                    name="applicationDeadline"
+                    onChange={handleInputChange}
+                    className="materialize-textarea"
+                    defaultValue=""
+                  />
+                  <label htmlFor="description">Application Deadline</label>
+                </div>
+              </div>
+
+              <div className="row">
+                <div className="input-field col s12">
+                  <input
+                    type="number"
+                    id="awardAmount"
+                    name="awardAmout"
+                    onChange={handleInputChange}
+                    className="materialize-textarea"
+                    defaultValue=""
+                  />
+                  <label htmlFor="description">Award Amount</label>
+                </div>
+              </div>
+
               <button
                 id="add-project-btn"
-                type="button"
+                type="submit"
                 className="waves-effect waves-light btn"
               >
                 Add Advert

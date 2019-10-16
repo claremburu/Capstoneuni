@@ -2,8 +2,11 @@
 import React from "react";
 // import "../../css/styles.css";
 import "../../css/materialize.min.css";
+import useFetch from "../CustomHooks/useFetchHook";
 
 const AdminDashboard = () => {
+  const res = useFetch("/api/user/project", {});
+  const dayta = res.response;
   return (
     <div>
       <div>
@@ -39,18 +42,23 @@ const AdminDashboard = () => {
                   </div>
                 </div>
               </form>
-              <div className="col s12" id="projects-container">
-                <div className="card">
-                  <div className="card-content">
-                    <span className="card-title">Title</span>
-                    <p>
-                      I am a very simple card. I am good at containing small
-                      bits of information. I am convenient because I require
-                      little markup to use effectively.
-                    </p>
-                  </div>
-                </div>
-              </div>
+              {dayta &&
+                dayta.map(item => {
+                  return (
+                    <div
+                      className="col s12"
+                      id="projects-container"
+                      key={item._id}
+                    >
+                      <div className="card">
+                        <div className="card-content">
+                          <span className="card-title">{item.title}</span>
+                          <p>{item.description}</p>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
               <button
                 id="add-project-btn"
                 type="button"
