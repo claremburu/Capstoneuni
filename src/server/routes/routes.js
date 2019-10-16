@@ -103,4 +103,9 @@ router.post('/login', (req, res, next) => {
     failureFlash: true
   })(req, res, next);
 });
+
+router.get('/logout', (req, res) => {
+  req.logout();
+  res.status(200);
+});
 module.exports = router;
