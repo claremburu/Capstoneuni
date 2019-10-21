@@ -103,7 +103,7 @@ const SignUp = () => {
           <div className="clear" />
         </div>
         <div className="copyright">
-          <p> © 2019 Capstone InterUni PM . All rights reserved | Design by </p>
+          <p> © 2019 Capstone InterUni PM . All rights reserved | Design by Patrick Gathara </p>
         </div>
       </div>
       ;
