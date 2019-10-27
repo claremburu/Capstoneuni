@@ -4,6 +4,9 @@ const express = require("express");
 const passport = require("passport");
 const bcrypt = require("bcryptjs");
 const { User, Project, Donor } = require("../models/data");
+const fs = require('fs-extra');
+const multer = require('multer');
+const bodyParser = require('body-parser')
 
 console.log(Project);
 
@@ -45,9 +48,9 @@ router.post("/register", (req, res) => {
 // add new projects to the database
 router.post(`/user/project`, (req, res) => {
   const { title, description } = req.body;
-  if ( !title && !description ) {
+  if (!title && !description) {
     res.send({
-      message: "Please fill all fields"
+      message: "Pleas insert the Title and Description of your project"
     });
   }
   const newProject = new Project(req.body);
