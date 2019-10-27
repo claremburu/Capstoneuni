@@ -10,26 +10,7 @@ import donorDashboard from "./components/Donor/DonorDashboard";
 import AdminDashboard from "./components/Admin/AdminDashboard";
 import Homepage from "./components/Homepage/HomePage";
 import applyFunds from "./components/applyFunds/applyFunds";
-import "./css/styles.css" 
-
-class MyComponent extends React.Component {  state = {
-  redirect: false
-};  setRedirect = () => {
-  this.setState({
-    redirect: true
-  })
-};  renderRedirect = () => {
-  if (this.state.redirect) {
-    return <Redirect to='/applyFunds' />
-  }
-};  render () {
-  return (
-     <div>
-      {this.renderRedirect()}
-      <button onClick={this.setRedirect}>Redirect</button>
-     </div>
-  )
-}}
+import "./css/styles.css";
 
 export default function App() {
   return (

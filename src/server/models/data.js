@@ -19,12 +19,11 @@ const userSchema = new mongoose.Schema({
 });
 
 const projectSchema = new mongoose.Schema({
-  name: { type: String, required: true },
   title: { type: String, required: true },
   abstract: { type: String, required: true },
   theme: { type: String, required: true },
   file: { type: String, required: false },
-  status: { type: String, default: 'pending' }
+  status: { type: String, default: "pending" }
 });
 
 const donorSchema = new mongoose.Schema({

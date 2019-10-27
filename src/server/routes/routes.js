@@ -3,10 +3,10 @@
 const express = require("express");
 const passport = require("passport");
 const bcrypt = require("bcryptjs");
+const fs = require("fs-extra");
+const multer = require("multer");
+const bodyParser = require("body-parser");
 const { User, Project, Donor } = require("../models/data");
-const fs = require('fs-extra');
-const multer = require('multer');
-const bodyParser = require('body-parser')
 
 console.log(Project);
 
@@ -47,20 +47,21 @@ router.post("/register", (req, res) => {
 
 // add new projects to the database
 router.post(`/user/project`, (req, res) => {
-  const { title, description } = req.body;
-  if (!title && !description) {
-    res.send({
-      message: "Pleas insert the Title and Description of your project"
-    });
+  const { title, abstract, theme } = req.body;
+  if (title && abstract && theme) {
+    const newProject = new Project(req.body);
+    newProject
+      .save()
+      .then(project => {
+        res.status(200).send(project); // this goes back to the client
+      })
+      .catch(err => res.status(500).send(err.message));
+  } else {
+    const message = "Please insert all the fields";
+    res.status(500).send(message);
   }
-  const newProject = new Project(req.body);
-  newProject
-    .save()
-    .then(project => {
-      res.status(200).send(project);
-    })
-    .catch(err => res.status(500).send(err.message));
 });
+
 // project fundings from the donor
 router.post(`/donor/funds`, (req, res) => {
   // console.log(req.body);
@@ -126,13 +127,14 @@ router.get(`/projects`, (req, res) => {
       }
       res.status(200).send(result);
     })
-    .catch(err => {
-      return res.status(500).send({
+    .catch(err =>
+      res.status(500).send({
         message: "Error retrieving Funded projects",
         err
-      });
-    });
+      })
+    );
 });
+
 router.get(`/user/project`, (req, res) => {
   Project.find()
     .then(result => {
@@ -143,12 +145,44 @@ router.get(`/user/project`, (req, res) => {
       }
       res.status(200).send(result);
     })
-    .catch(err => {
-      return res.status(500).send({
+    .catch(err =>
+      res.status(500).send({
         message: "Error retrieving Funded projects",
         err
-      });
-    });
+      })
+    );
+});
+
+// update project status
+// router.patch(`/user/project`, (req, res) => {
+//   console.log(req.body);
+//   Project.findById({ _id: req.body.id })
+//     .
+//     .then(result => {
+//       if (!result) {
+//         return res.status(404).send({
+//           message: "No available funded projects"
+//         });
+//       }
+//       res.status(200).send(result);
+//     })
+//     .catch(err =>
+//       res.status(500).send({
+//         message: "Error retrieving Funded projects",
+//         err
+//       })
+//     );
+// });
+
+router.patch("/user/project", (req, res) => {
+  console.log(req.body);
+  // Project.findById(req.body.id, (err, project) => {
+  //   for (let b in req.body) {
+  //     project[b] = req.body[b];
+  //   }
+  //   book.save();
+  res.json(req.body);
+  // });
 });
 
 router.post("/login", (req, res, next) => {

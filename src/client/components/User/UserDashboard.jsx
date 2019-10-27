@@ -1,21 +1,13 @@
 /* eslint-disable arrow-parens */
 /* eslint-disable quotes */
 import React from "react";
-import { Modal, Button, Dropdown, Divider, Icon } from "react-materialize";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
-  Row,
-  NavLink
-} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import "../../css/materialize.min.css";
 
 import useForm from "../CustomHooks/CustomHooks";
+
 import useFetch from "../CustomHooks/useFetchHook";
-import applyFunds from "../applyFunds/applyFunds";
 
 const UserDashboard = () => {
   const { inputs, handleInputChange, handleSubmit } = useForm(saveData);
@@ -23,7 +15,9 @@ const UserDashboard = () => {
   const dayta = res.response;
   console.log(dayta);
 
+
   function addProject(data) {
+    console.log(data);
     fetch(`/api/user/project/`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -33,21 +27,13 @@ const UserDashboard = () => {
       .then(result => {
         console.log(result);
         if (data) alert(`Project added successfully`);
-        alert("unable to add Project");
       })
 
       .catch(err => {
         console.log(err);
-        alert("unable to add Project");
+        alert(`Unable to add Project: ${err.message}`);
       });
   }
-
-  // app.get("/search", async (req, res) => {
-  // 	let projects = await mongoose
-  // 		.model("Project")
-  // 		.find({ $text: { $search: req.query.searchString } });
-  // 	return res.json(projects);
-  // });
 
   function saveData() {
     addProject(inputs);
@@ -89,22 +75,22 @@ const UserDashboard = () => {
                 </div>
               </form>
               {dayta &&
-                dayta.map(item => {
-                  return (
-                    <div
-                      className="col s12"
-                      id="projects-container"
-                      key={item._id}
-                    >
-                      <div className="card">
-                        <div className="card-content">
-                          <span className="card-title">{item.title}</span>
-                          <p>{item.description}</p>
-                        </div>
+                dayta.map(item => (
+                  <div
+                    className="col s12"
+                    id="projects-container"
+                    key={item._id}
+                  >
+                    <div className="card">
+                      <div className="card-content">
+                        <span className="card-title">{item.title}</span>
+                        <h4>{item.abstract}</h4>
+                        <h3>{item.theme}</h3>
+                        {"Status: " + item.status}
                       </div>
                     </div>
-                  );
-                })}
+                  </div>
+                ))}
             </div>
             <form className="col s4 offset-s1" onSubmit={handleSubmit}>
               <h3>Add Project</h3>
@@ -127,19 +113,19 @@ const UserDashboard = () => {
                     className="materialize-textarea"
                     onChange={handleInputChange}
                     name="abstract"
-                    defaultValue={""}
+                    defaultValue=""
                   />
                   <label htmlFor="description">Abstract</label>
                 </div>
               </div>
               <div className="row">
                 <div className="input-field col s12">
-                <textarea
+                  <textarea
                     id="theme"
                     className="materialize-textarea"
                     onChange={handleInputChange}
                     name="theme"
-                    defaultValue={""}
+                    defaultValue=""
                   />
                   <label htmlFor="description">Theme</label>
                 </div>
@@ -161,7 +147,7 @@ const UserDashboard = () => {
                 Select files: <input type="file" name="myFiles" multiple />
                 <input type="submit" defaultValue="Upload your files" />
               </form>
-              {/*   PHOTO*/}
+              {/*   PHOTO */}
               <form
                 action="/upload/photo"
                 encType="multipart/form-data"
