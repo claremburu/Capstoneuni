@@ -23,7 +23,7 @@ const DonorDashboard = () => {
       })
       .catch(err => {
         console.log(err);
-        alert("unable add the Project");
+        alert("unable to add Project");
       });
   }
 

@@ -19,8 +19,10 @@ const userSchema = new mongoose.Schema({
 });
 
 const projectSchema = new mongoose.Schema({
+  name: { type: String, required: true },
   title: { type: String, required: true },
-  description: { type: String }
+  abstract: { type: String, required: true },
+  theme: { type: String, required: true }
 });
 
 const donorSchema = new mongoose.Schema({

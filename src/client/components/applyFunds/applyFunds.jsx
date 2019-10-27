@@ -1,10 +1,41 @@
-import react from react;
-import materialize from '../../css/materialize.min.css';
+/* eslint-disable quotes */
+import React, { useEffect } from "react";
+import "../../css/materialize.min.css";
+import useForm from "../CustomHooks/CustomHooks";
+import useFetch from "../CustomHooks/useFetchHook";
+import donorDashboard from "../Donor/DonorDashboard";
+const applyFunds = () => {
+  const { inputs, handleInputChange, handleSubmit } = useForm(saveData);
+  const res = useFetch("/api/donor", {});
 
-const applyFunds = () =>{
-    return(
-        <div>
-            <div className="row">
+  //console.log(res.response);
+
+  function addFunds(data) {
+    fetch(`/api/donor/funds`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    })
+      .then(res => res.json())
+      .then(result => {
+        console.log(result);
+        if (data) alert(`Advert added successfully`);
+      })
+      .catch(err => {
+        console.log(err);
+        alert("unable to add Advert");
+      });
+  }
+
+  function saveData() {
+    addApplyFunds(inputs);
+  }
+
+  // fetching from the database to the state
+  const dayta = res.response;
+  return (
+    <div>
+      <div className="row">
   <form className="col s12">
     <div className="row">
       <div className="input-field col s6">
@@ -58,27 +89,10 @@ const applyFunds = () =>{
       </div>
     </div>
   </form>
-  <form className="col s12">
-    <div className="row">
-      <div className="input-field col s6">
-        <input id="input_text" type="text" data-length={10} />
-        <label htmlFor="input_text">Input text</label>
-      </div>
-    </div>
-    <div className="row">
-      <div className="input-field col s12">
-        <textarea
-          id="textarea2"
-          className="materialize-textarea"
-          data-length={120}
-          defaultValue={""}
-        />
-        <label htmlFor="textarea2">Textarea</label>
-      </div>
-    </div>
-  </form>
 </div>;
 
-        </div>
-    )
-}
+    </div>
+  );
+};
+
+export default applyFunds;

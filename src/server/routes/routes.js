@@ -45,9 +45,9 @@ router.post("/register", (req, res) => {
 // add new projects to the database
 router.post(`/user/project`, (req, res) => {
   const { title, description } = req.body;
-  if (!title && !description) {
+  if ( !title && !description ) {
     res.send({
-      message: "Pleas insert the Title and Description of your project"
+      message: "Please fill all fields"
     });
   }
   const newProject = new Project(req.body);

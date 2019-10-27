@@ -1,19 +1,30 @@
 /* eslint-disable arrow-parens */
 /* eslint-disable quotes */
 import React from "react";
+import { Modal, Button, Dropdown, Divider, Icon } from "react-materialize";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  Row,
+  NavLink
+} from "react-router-dom";
+
 import "../../css/materialize.min.css";
 
 import useForm from "../CustomHooks/CustomHooks";
 import useFetch from "../CustomHooks/useFetchHook";
+import applyFunds from "../applyFunds/applyFunds";
 
 const UserDashboard = () => {
   const { inputs, handleInputChange, handleSubmit } = useForm(saveData);
-  const res = useFetch("/api/user/project", {});
+  const res = useFetch("/api/user/project/", {});
   const dayta = res.response;
   console.log(dayta);
 
   function addProject(data) {
-    fetch(`/api/user/project`, {
+    fetch(`/api/user/project/`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data)
@@ -22,18 +33,26 @@ const UserDashboard = () => {
       .then(result => {
         console.log(result);
         if (data) alert(`Project added successfully`);
-        alert("unable add the Project");
+        alert("unable to add Project");
       })
 
       .catch(err => {
         console.log(err);
-        alert("unable add the Project");
+        alert("unable to add Project");
       });
   }
+
+  // app.get("/search", async (req, res) => {
+  // 	let projects = await mongoose
+  // 		.model("Project")
+  // 		.find({ $text: { $search: req.query.searchString } });
+  // 	return res.json(projects);
+  // });
 
   function saveData() {
     addProject(inputs);
   }
+
   return (
     <div>
       <div>
@@ -93,7 +112,7 @@ const UserDashboard = () => {
                 <div className="input-field col s12">
                   <input
                     id="title"
-                    type="email"
+                    type="text"
                     className="validate"
                     name="title"
                     onChange={handleInputChange}
@@ -104,30 +123,59 @@ const UserDashboard = () => {
               <div className="row">
                 <div className="input-field col s12">
                   <textarea
-                    id="description"
+                    id="abst"
                     className="materialize-textarea"
                     onChange={handleInputChange}
-                    name="description"
+                    name="abstract"
                     defaultValue={""}
                   />
-                  <label htmlFor="description">Description</label>
+                  <label htmlFor="description">Abstract</label>
                 </div>
               </div>
-              {/* <span>File</span>
-              <input type="file" name="document" />
-              <input type="submit" /> */}
+              <div className="row">
+                <div className="input-field col s12">
+                <textarea
+                    id="theme"
+                    className="materialize-textarea"
+                    onChange={handleInputChange}
+                    name="theme"
+                    defaultValue={""}
+                  />
+                  <label htmlFor="description">Theme</label>
+                </div>
+              </div>
+              <form
+                action="/uploadfile"
+                encType="multipart/form-data"
+                method="POST"
+              >
+                Select File: <input type="file" name="myFile" />
+                <input type="submit" defaultValue="Upload a file" />
+              </form>
+              {/* MULTIPLE FILES */}
+              <form
+                action="/uploadmultiple"
+                encType="multipart/form-data"
+                method="POST"
+              >
+                Select files: <input type="file" name="myFiles" multiple />
+                <input type="submit" defaultValue="Upload your files" />
+              </form>
+              {/*   PHOTO*/}
+              <form
+                action="/upload/photo"
+                encType="multipart/form-data"
+                method="POST"
+              >
+                Select Image:
+                <input type="file" name="myImage" accept="image/*" />
+                <input type="submit" defaultValue="Upload Photo" />
+              </form>
             </form>
-            {/* <div class="file-field input-field">
-						<form method="POST" action="/submit-form">
-						<span>File</span>
-						<input type="file" name="document" />
-						<input type="submit" />
-					  </form>
-						
-						</div> */}
-            <div className="file-path-wrapper">
+
+            {/* <div className="file-path-wrapper">
               <input className="file-path validate" type="text" />
-            </div>
+            </div> */}
           </div>
           <button
             id="add-project-btn"
@@ -137,20 +185,30 @@ const UserDashboard = () => {
           >
             Add Project
           </button>
-          <button
+          <Link to="/funding-opportunities" className="btn btn-primary">
+            View Funding Opportunities
+          </Link>
+          {/* <button
             id="add-project-btn"
             type="button"
             className="waves-effect waves-light btn"
           >
             View Funding opportunities
-          </button>
-          <button
-            id="add-project-btn"
+          </button> */}
+          {/* <button
+            id="apply-funds-btn"
             type="button"
             className="waves-effect waves-light btn"
+            // onClick = {this.applyFunds}
           >
             Apply for funding
-          </button>
+          </button> */}
+          <Link to="/apply-funds" className="btn btn-primary">
+            Apply for Funding
+          </Link>
+          {/* applyFunds = () => {
+              <NavLink to="/applyFunds"> Apply For Funds </NavLink>
+            } */}
         </div>
         {/* Compiled and minified JavaScript */}
       </div>
