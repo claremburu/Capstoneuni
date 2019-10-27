@@ -19,11 +19,11 @@ const DonorDashboard = () => {
       .then(res => res.json())
       .then(result => {
         console.log(result);
-        if (data) alert(`Project added successfully`);
+        if (data) alert(`Advert added successfully`);
       })
       .catch(err => {
         console.log(err);
-        alert("unable to add Project");
+        alert("unable to add Advert");
       });
   }
 
