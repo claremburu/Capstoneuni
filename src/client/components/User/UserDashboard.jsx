@@ -115,19 +115,19 @@ const UserDashboard = () => {
                     name="abstract"
                     defaultValue=""
                   />
-                  <label htmlFor="description">Abstract</label>
+                  <label htmlFor="abstarct">Abstract</label>
                 </div>
               </div>
               <div className="row">
                 <div className="input-field col s12">
                   <textarea
                     id="theme"
-                    className="materialize-textarea"
+                    className="materialize-textarea text-bold"
                     onChange={handleInputChange}
                     name="theme"
                     defaultValue=""
                   />
-                  <label htmlFor="description">Theme</label>
+                  <label htmlFor="theme">Theme</label>
                 </div>
               </div>
               <form

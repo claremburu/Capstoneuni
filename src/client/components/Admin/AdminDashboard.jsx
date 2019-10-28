@@ -74,7 +74,7 @@ const AdminDashboard = () => {
                     key={item._id}
                   >
                     <div className="card">
-                      <div className="card-content">
+                      <div clasasName="card-content">
                         <span className="card-title">{item.title}</span>
                         <h4>{item.abstract}</h4>
                         <h3>{item.theme}</h3>

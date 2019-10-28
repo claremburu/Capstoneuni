@@ -5,31 +5,31 @@ import useForm from "../CustomHooks/CustomHooks";
 import useFetch from "../CustomHooks/useFetchHook";
 
 const DonorDashboard = () => {
-  const { inputs, handleInputChange, handleSubmit } = useForm(saveData);
-  const res = useFetch("/api/projects", {});
+  const { inputs, handleInputChange, handleSubmit } = useForm(viewFunds);
+  const res = useFetch("/api/donor/funds", {});
 
   //console.log(res.response);
 
-  function addFunds(data) {
+  function viewFunds(data) {
     fetch(`/api/donor/funds`, {
-      method: "POST",
+      method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data)
     })
-      .then(res => res.json())
-      .then(result => {
-        console.log(result);
-        if (data) alert(`Advert added successfully`);
-      })
-      .catch(err => {
-        console.log(err);
-        alert("unable to add Advert");
-      });
-  }
+    .then(rawData => rawData.json())
+    .then(result => {
+      console.log(result);
+      if (result) alert(result.message);
+    })
+    .catch(err => {
+      console.log(err);
+      alert(`Verification failed ${err.message}`);
+    });
+}
 
-  function saveData() {
-    addFunds(inputs);
-  }
+  // function viewFunds() {
+  //   viewFunds(inputs);
+  // }
 
   // fetching from the database to the state
   const dayta = res.response;
@@ -91,7 +91,7 @@ const DonorDashboard = () => {
                   );
                 })}
             </div>
-            <form className="col s4 offset-s1" onSubmit={handleSubmit}>
+            {/* <form className="col s4 offset-s1" onSubmit={handleSubmit}>
               <h3>Add Advert</h3>
               <div className="row">
                 <div className="input-field col s12">
@@ -175,7 +175,7 @@ const DonorDashboard = () => {
                   Funded Projects
                 </button>
               </div>
-            </form>
+            </form> */}
           </div>
         </div>
         {/* Compiled and minified JavaScript */}

@@ -10,6 +10,7 @@ import donorDashboard from "./components/Donor/DonorDashboard";
 import AdminDashboard from "./components/Admin/AdminDashboard";
 import Homepage from "./components/Homepage/HomePage";
 import applyFunds from "./components/applyFunds/applyFunds";
+import fundingOpportunities from "./components/fundingOpportunities/fundingOpportunities";
 import "./css/styles.css";
 
 export default function App() {
@@ -25,6 +26,7 @@ export default function App() {
         <Route path="/admin-dashboard" component={AdminDashboard} />
         <Route path="/home-page" component={Homepage} />
         <Route path="/apply-funds" component={applyFunds} />
+        <Route path="/funding-opportunities" component={fundingOpportunities} />
 
         <Route component={PageNotfound} />
       </Switch>
