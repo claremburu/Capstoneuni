@@ -8,7 +8,7 @@ import PageNotfound from "./components/PageNotFound";
 import SignUp from "./components/SignUp/SignUp";
 import donorDashboard from "./components/Donor/DonorDashboard";
 import AdminDashboard from "./components/Admin/AdminDashboard";
-import Homepage from "./components/Homepage/HomePage";
+import HomePage from "./components/Homepage/HomePage";
 import applyFunds from "./components/applyFunds/applyFunds";
 import "./css/styles.css";
 
@@ -17,13 +17,13 @@ export default function App() {
     <div className="container">
       {/* this is the everall div of your website e.g with className = "container" */}
       <Switch>
+      <Route exact path="/" component={HomePage} />
         <Route exact path="/user-dashboard" component={Dashboard} />
         {/* <Route path="/about" component={AboutPage} /> */}
         {/* <Route path="/login" component={Login} /> */}
         <Route path="/login-signup" component={SignUp} />
         <Route path="/donor-dashboard" component={donorDashboard} />
         <Route path="/admin-dashboard" component={AdminDashboard} />
-        <Route path="/home-page" component={Homepage} />
         <Route path="/apply-funds" component={applyFunds} />
 
         <Route component={PageNotfound} />

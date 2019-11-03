@@ -13,8 +13,15 @@ const UserDashboard = () => {
   const { inputs, handleInputChange, handleSubmit } = useForm(saveData);
   const res = useFetch("/api/user/project/", {});
   const dayta = res.response;
-  console.log(dayta);
-
+  const filtered = dayta && dayta.filter( project => {
+    if(inputs.search !== undefined){
+      return project.title.includes(inputs.search);
+    }else{
+      return project;
+    }
+   
+  });
+  console.log("dayta ",dayta);
 
   function addProject(data) {
     console.log(data);
@@ -57,10 +64,10 @@ const UserDashboard = () => {
         <div className="container white" style={{ minHeight: 800 }}>
           <div className="row">
             <div className="col s7">
-              <form className="col s12">
+              <form className="col s12" onSubmit={handleSubmit}>
                 <div className="row">
                   <div className="input-field col s9">
-                    <input id="search" type="email" className="validate" />
+                    <input id="search" type="email" className="validate" name="search"  onChange={handleInputChange} />
                     <label htmlFor="search">Search</label>
                   </div>
                   <div className="input-field col s3">
@@ -74,8 +81,8 @@ const UserDashboard = () => {
                   </div>
                 </div>
               </form>
-              {dayta &&
-                dayta.map(item => (
+              {filtered &&
+                filtered.map(item => (
                   <div
                     className="col s12"
                     id="projects-container"

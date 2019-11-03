@@ -9,9 +9,17 @@ import useFetch from "../CustomHooks/useFetchHook";
 import useForm from "../CustomHooks/CustomHooks";
 
 const AdminDashboard = () => {
-  const res = useFetch("/api/user/project", {}); // fetch all the projects from the database
-
   const { inputs, handleInputChange, handleSubmit } = useForm(updateStatus);
+  const res = useFetch("/api/user/project", {}); // fetch all the projects from the database
+  const dayta = res.response;
+  const filtered = dayta && dayta.filter( project => {
+    console.log("inputs.search ",inputs.search)
+    if(inputs.search !== undefined){
+      return project.title.includes(inputs.search);
+    }else{
+      return project;
+    }
+  });
 
   function updateStatus() {
     fetch(`/api/user/project/`, {
@@ -21,7 +29,7 @@ const AdminDashboard = () => {
     })
       .then(rawData => rawData.json())
       .then(result => {
-        console.log(result);
+        console.log("result ",result);
         if (result) alert(result.message);
       })
       .catch(err => {
@@ -30,7 +38,6 @@ const AdminDashboard = () => {
       });
   }
 
-  const dayta = res.response;
   return (
     <div>
       <div>
@@ -49,10 +56,10 @@ const AdminDashboard = () => {
         <div className="container white" style={{ minHeight: 800 }}>
           <div className="row">
             <div className="col s7">
-              <form className="col s12">
+              <form className="col s12" onSubmit={handleSubmit}>
                 <div className="row">
                   <div className="input-field col s9">
-                    <input id="search" type="email" className="validate" />
+                    <input id="search" type="email" name="search" className="validate" onChange={handleInputChange}/>
                     <label htmlFor="search">Search</label>
                   </div>
                   <div className="input-field col s3">
@@ -66,8 +73,8 @@ const AdminDashboard = () => {
                   </div>
                 </div>
               </form>
-              {dayta &&
-                dayta.map(item => (
+              {filtered &&
+                filtered.map(item => (
                   <div
                     className="col s12"
                     id="projects-container"

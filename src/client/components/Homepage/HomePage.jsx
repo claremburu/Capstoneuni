@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Button, Card, Row, Col, Container } from "react-materialize";
 import { BrowserRouter as Router } from "react-router-dom";
 import { Switch, Route, Link } from "react-router-dom";
-
 import "../../css/styles.css";
 
 const HomePage = () => {
