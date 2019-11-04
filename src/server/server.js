@@ -9,7 +9,6 @@ const multer = require("multer");
 const fs = require("fs-extra");
 const app = express();
 
-const uploadRoute = require("./routes/fileupload");
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));

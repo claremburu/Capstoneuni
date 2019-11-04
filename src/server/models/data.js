@@ -3,12 +3,6 @@ const mongoose = require("mongoose");
 
 // pre save functiion
 
-const newsSchema = new mongoose.Schema({
-  title: { type: String },
-  date: { type: String },
-  text: { type: String }
-});
-
 const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
   university: { type: String },
@@ -22,7 +16,7 @@ const projectSchema = new mongoose.Schema({
   title: { type: String, required: true },
   abstract: { type: String, required: true },
   theme: { type: String, required: true },
-  file: { type: String, required: false },
+  myImage: { type: String, required: true, title: "picture" },
   status: { type: String, default: "pending" }
 });
 
@@ -41,11 +35,8 @@ const Project = mongoose.model("Project", projectSchema);
 
 const Donor = mongoose.model("Donor", donorSchema);
 
-const News = mongoose.model("News", newsSchema);
-
 module.exports = {
   User,
   Project,
-  Donor,
-  News
+  Donor
 };

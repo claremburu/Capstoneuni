@@ -87,6 +87,7 @@ const UserDashboard = () => {
                         <h4>{item.abstract}</h4>
                         <h3>{item.theme}</h3>
                         {"Status: " + item.status}
+                        <span>{item.myImage}</span>
                       </div>
                     </div>
                   </div>

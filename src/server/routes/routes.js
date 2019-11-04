@@ -47,8 +47,8 @@ router.post("/register", (req, res) => {
 
 // add new projects to the database
 router.post(`/user/project`, (req, res) => {
-  const { title, abstract, theme } = req.body;
-  if (title && abstract && theme) {
+  const { title, abstract, theme, myImage } = req.body;
+  if (title && abstract && theme && myImage) {
     const newProject = new Project(req.body);
     newProject
       .save()
@@ -96,6 +96,25 @@ router.post(`/donor/funds`, (req, res) => {
     })
     .catch(err => res.status(500).send(err.message));
 });
+
+router.get(`/donor/funds`, (req, res) => {
+  Donor.find()
+    .then(result => {
+      if (!result) {
+        return res.status(404).send({
+          message: "No available funded projects"
+        });
+      }
+      res.status(200).send(result);
+    })
+    .catch(err =>
+      res.status(500).send({
+        message: "Error retrieving Funded projects",
+        err
+      })
+    );
+});
+
 
 // router.post(`/user/project`, (req, res) => {
 //   // console.log(req.body);
@@ -185,6 +204,13 @@ router.patch("/user/project", (req, res) => {
   // });
 });
 
+router.get("/search", async (req, res) => {
+	let projects = await mongoose
+		.model("Project")
+		.find({ $text: { $search: req.query.searchString } });
+	return res.json(projects);
+});
+
 router.post("/login", (req, res, next) => {
   passport.authenticate("local", {
     successRedirect: "/dashboard",
@@ -197,4 +223,66 @@ router.get("/logout", (req, res) => {
   req.logout();
   res.status(200);
 });
+
+
+let storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads')
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.fieldname + '-' + Date.now())
+  }
+})
+
+let upload = multer({ storage: storage })
+
+router.post('/uploadphoto', upload.single('picture'), (req, res) => {
+	var img = fs.readFileSync(req.file.path);
+ var encode_image = img.toString('base64');
+ // Define a JSONobject for the image attributes for saving to database
+ 
+ var finalImg = {
+      contentType: req.file.mimetype,
+      image:  new Buffer(encode_image, 'base64')
+   };
+db.collection('mycollection').insertOne(finalImg, (err, result) => {
+  	console.log(result)
+
+    if (err) return console.log(err)
+
+    console.log('saved to database')
+    res.redirect('/')
+  
+    
+  })
+})
+
+
+router.get('/photos', (req, res) => {
+db.collection('mycollection').find().toArray((err, result) => {
+
+  	const imgArray= result.map(element => element._id);
+			console.log(imgArray);
+
+   if (err) return console.log(err)
+   res.send(imgArray)
+
+  
+   
+  })
+});
+
+router.get('/photo/:id', (req, res) => {
+var filename = req.params.id;
+
+db.collection('mycollection').findOne({'_id': ObjectId(filename) }, (err, result) => {
+
+    if (err) return console.log(err)
+
+   res.contentType('image/jpeg');
+   res.send(result.image.buffer)
+  
+   
+  })
+})
 module.exports = router;

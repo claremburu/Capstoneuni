@@ -12,7 +12,7 @@ const DonorDashboard = () => {
 
   function viewFunds(data) {
     fetch(`/api/donor/funds`, {
-      method: "PATCH",
+      method: "GET",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data)
     })
