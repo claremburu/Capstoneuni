@@ -15,11 +15,15 @@ const AdminDashboard = () => {
   const filtered = dayta && dayta.filter( project => {
     console.log("inputs.search ",inputs.search)
     if(inputs.search !== undefined){
-      return project.title.includes(inputs.search);
+      return project.title.toLowerCase().includes(inputs.search.toLowerCase());
     }else{
       return project;
     }
   });
+
+  function saveStatus() {
+    updateStatus(inputs);
+  }
 
   function updateStatus() {
     fetch(`/api/user/project/`, {
@@ -93,7 +97,7 @@ const AdminDashboard = () => {
                             className="waves-effect waves-light btn"
                             onClick={handleInputChange}
                             name="status"
-                            value={{ id: item._id, status: "Approved" }}
+                            value={item._id}
                           >
                             <i className="material-icons left">check</i>
                             Approve

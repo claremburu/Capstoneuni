@@ -8,6 +8,7 @@ const DonorDashboard = () => {
   const { inputs, handleInputChange, handleSubmit } = useForm(saveData);
   const res = useFetch("/api/projects", {});
 
+  
   //console.log(res.response);
 
   function addFunds(data) {
@@ -83,7 +84,7 @@ const DonorDashboard = () => {
                           <span className="card-title">{item.title}</span>
                           <p>{item.description}</p>
                           <p>{item.qualifications}</p>
-                          <p>{item.applicationDeadline}</p>
+                          {/* <p>{item.applicationDeadline}</p> */}
                           <p>{item.awardAmount}</p>
                         </div>
                       </div>

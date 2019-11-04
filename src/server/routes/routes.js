@@ -193,14 +193,15 @@ router.get(`/user/project`, (req, res) => {
 //     );
 // });
 
-router.patch("/user/project", (req, res) => {
+router.patch("/user/project", async(req, res) => {
   console.log(req.body);
+  let result = await Project.update({_id:req.body.status}, {status: "approved"});
   // Project.findById(req.body.id, (err, project) => {
   //   for (let b in req.body) {
   //     project[b] = req.body[b];
   //   }
   //   book.save();
-  res.json(req.body);
+  res.json(result);
   // });
 });
 

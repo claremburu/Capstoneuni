@@ -17,7 +17,8 @@ const projectSchema = new mongoose.Schema({
   abstract: { type: String, required: true },
   theme: { type: String, required: true },
   myImage: { type: String, required: true, title: "picture" },
-  status: { type: String, default: "pending" }
+  status: { type: String, default: "pending" },
+  user: {type: mongoose.Schema.Types.ObjectId, required: true}
 });
 
 const donorSchema = new mongoose.Schema({

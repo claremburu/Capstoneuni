@@ -15,7 +15,7 @@ const UserDashboard = () => {
   const dayta = res.response;
   const filtered = dayta && dayta.filter( project => {
     if(inputs.search !== undefined){
-      return project.title.includes(inputs.search);
+      return project.title.toLowerCase().includes(inputs.search.toLowerCase());
     }else{
       return project;
     }
