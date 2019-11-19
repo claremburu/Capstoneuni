@@ -4,13 +4,13 @@ import "../../css/materialize.min.css";
 import useForm from "../CustomHooks/CustomHooks";
 import useFetch from "../CustomHooks/useFetchHook";
 
-const DonorDashboard = () => {
-  const { inputs, handleInputChange, handleSubmit } = useForm(viewFunds);
+const applyForFunds = () => {
+  const { inputs, handleInputChange, handleSubmit } = useForm(applyFunds);
   const res = useFetch("/api/donor/funds", {});
 
   //console.log(res.response);
 
-  function viewFunds(data) {
+  function applyFunds(data) {
     fetch(`/api/donor/funds`, {
       method: "GET",
       headers: { "Content-Type": "application/json" },
@@ -86,6 +86,16 @@ const DonorDashboard = () => {
                           <p>{item.applicationDeadline}</p>
                           <p>{item.awardAmount}</p>
                         </div>
+                        <form onSubmit={handleSubmit}>
+                          <button
+                            className="waves-effect waves-light btn"
+                            onClick={handleInputChange}
+                            name="status"
+                            value={item._id}
+                          >
+                            Apply
+                          </button>
+                        </form>
                       </div>
                     </div>
                   );
@@ -185,4 +195,4 @@ const DonorDashboard = () => {
   );
 };
 
-export default DonorDashboard;
+export default applyForFunds;

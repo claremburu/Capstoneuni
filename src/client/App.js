@@ -12,6 +12,7 @@ import HomePage from "./components/Homepage/HomePage";
 import applyFunds from "./components/applyFunds/applyFunds";
 import fundingOpportunities from "./components/fundingOpportunities/fundingOpportunities";
 import "./css/styles.css";
+import "./css/materialize.min.css";
 
 export default function App() {
   return (

@@ -2,12 +2,15 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-const News = require("./models/data");
+// const News = require("./models/data");
+const { User, Project, Donor } = require("./models/data");
 const passport = require("passport");
 const session = require("express-session");
 const multer = require("multer");
 const fs = require("fs-extra");
+const axios = require("axios");
 const app = express();
+const user = require("./routes/routes")
 
 
 app.use(bodyParser.json());
@@ -27,21 +30,25 @@ mongoose
 
 app.use(express.static("dist"));
 
-require("./config/passport")(passport);
-// Express session
-app.use(
-  session({
-    secret: "secret",
-    resave: true,
-    saveUninitialized: true
-  })
-);
-
+// require("./config/passport")(passport);
 // Passport middleware
-app.use(passport.initialize());
-app.use(passport.session());
+app.use(passport.initialize());// Passport config
+require("./config/passport")(passport);// Routes
+app.use("/api/user", user);
+// // Express session
+// app.use(
+//   session({
+//     secret: "secret",
+//     resave: true,
+//     saveUninitialized: true
+//   })
+// );
 
-app.use(express.static("dist"));
+// // Passport middleware
+// app.use(passport.initialize());
+// app.use(passport.session());
+
+// app.use(express.static("dist"));
 
 // mounting of routes
 app.use(`/api`, require("./routes/routes"));

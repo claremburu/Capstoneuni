@@ -8,47 +8,120 @@ const multer = require("multer");
 const bodyParser = require("body-parser");
 const { User, Project, Donor } = require("../models/data");
 
+const validateRegisterInput = require("../../client/components/Register/Register");
+const validateLoginInput = require("../../client/components/Loggedin/Loggedin");
+
 console.log(Project);
 
 const router = express.Router();
 
 // some routes
 
-// user registration
 router.post("/register", (req, res) => {
-  const { name, university, course, regNo, email, password } = req.body;
-  if (!name || !university || !course || !regNo || !email || !password) {
-    res.send("Please fill all fields");
-  }
-  const newUser = new User({
-    name,
-    university,
-    course,
-    regNo,
-    email,
-    password
-  });
-  bcrypt.genSalt(10, (err, salt) => {
-    // eslint-disable-next-line no-shadow
-    bcrypt.hash(newUser.password, salt, (err, hash) => {
-      if (err) throw err;
-      newUser.password = hash;
-      newUser
-        .save()
-        .then(user => {
-          console.log(user.password);
-          res.status(200).redirect("/users/login");
-        })
-        // eslint-disable-next-line no-shadow
-        .catch(err => console.log(err));
-    });
+  // Form validationconst { errors, isValid } = validateRegisterInput(req.body);// Check validation
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }User.findOne({ email: req.body.email }).then(user => {
+    if (user) {
+      return res.status(400).json({ email: "Email already exists" });
+    } else {
+      const newUser = new User({
+        name: req.body.name,
+        university: req.body.university,
+        course: req.body.course,
+        regNo: req.body.regNo,
+        email: req.body.email,
+        password: req.body.password
+      });// Hash password before saving in database
+      bcrypt.genSalt(10, (err, salt) => {
+        bcrypt.hash(newUser.password, salt, (err, hash) => {
+          if (err) throw err;
+          newUser.password = hash;
+          newUser
+            .save()
+            .then(user => res.json(user))
+            .catch(err => console.log(err));
+        });
+      });
+    }
   });
 });
 
+router.post("/login", (req, res) => {
+  // Form validationconst { errors, isValid } = validateLoginInput(req.body);// Check validation
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }const email = req.body.email;
+  const password = req.body.password;// Find user by email
+  User.findOne({ email }).then(user => {
+    // Check if user exists
+    if (!user) {
+      return res.status(404).json({ emailnotfound: "Email not found" });
+    }// Check password
+    bcrypt.compare(password, user.password).then(isMatch => {
+      if (isMatch) {
+        // User matched
+        // Create JWT Payload
+        const payload = {
+          id: user.id,
+          name: user.name
+        };// Sign token
+        jwt.sign(
+          payload,
+          keys.secretOrKey,
+          {
+            expiresIn: 31556926 // 1 year in seconds
+          },
+          (err, token) => {
+            res.json({
+              success: true,
+              token: "Bearer " + token
+            });
+          }
+        );
+      } else {
+        return res
+          .status(400)
+          .json({ passwordincorrect: "Password incorrect" });
+      }
+    });
+  });
+});
+// user registration
+// router.post("/register", (req, res) => {
+//   const { name, university, course, regNo, email, password } = req.body;
+//   if (!name || !university || !course || !regNo || !email || !password) {
+//     res.send("Please fill all fields");
+//   }
+//   const newUser = new User({
+//     name,
+//     university,
+//     course,
+//     regNo,
+//     email,
+//     password
+//   });
+//   bcrypt.genSalt(10, (err, salt) => {
+//     // eslint-disable-next-line no-shadow
+//     bcrypt.hash(newUser.password, salt, (err, hash) => {
+//       if (err) throw err;
+//       newUser.password = hash;
+//       newUser
+//         .save()
+//         .then(user => {
+//           console.log(user.password);
+//           res.status(200).redirect("/users/login");
+//         })
+//         // eslint-disable-next-line no-shadow
+//         .catch(err => console.log(err));
+//     });
+//   });
+// });
+
 // add new projects to the database
 router.post(`/user/project`, (req, res) => {
-  const { title, abstract, theme, myImage } = req.body;
-  if (title && abstract && theme && myImage) {
+  const { title, abstract, theme } = req.body;
+  if (title && abstract && theme) {
     const newProject = new Project(req.body);
     newProject
       .save()
@@ -194,8 +267,15 @@ router.get(`/user/project`, (req, res) => {
 // });
 
 router.patch("/user/project", async(req, res) => {
-  console.log(req.body);
-  let result = await Project.update({_id:req.body.status}, {status: "approved"});
+  //let response= JSON.parse(req.body);
+  //console.log("rbs  ",typeof Object.keys(req.body)[0]);
+  let proj = Object.keys(req.body)[0];
+  let result;
+  if(proj === "approved"){
+     result = await Project.update({_id:req.body.approved }, {status: proj });
+  }else{
+    result = await Project.update({_id:req.body.rejected }, {status: proj });
+  }
   // Project.findById(req.body.id, (err, project) => {
   //   for (let b in req.body) {
   //     project[b] = req.body[b];
@@ -212,13 +292,13 @@ router.get("/search", async (req, res) => {
 	return res.json(projects);
 });
 
-router.post("/login", (req, res, next) => {
-  passport.authenticate("local", {
-    successRedirect: "/dashboard",
-    failureRedirect: "/users/login",
-    failureFlash: true
-  })(req, res, next);
-});
+// router.post("/login", (req, res, next) => {
+//   passport.authenticate("local", {
+//     successRedirect: "/dashboard",
+//     failureRedirect: "/users/login",
+//     failureFlash: true
+//   })(req, res, next);
+// });
 
 router.get("/logout", (req, res) => {
   req.logout();

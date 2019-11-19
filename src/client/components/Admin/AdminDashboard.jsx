@@ -13,7 +13,7 @@ const AdminDashboard = () => {
   const res = useFetch("/api/user/project", {}); // fetch all the projects from the database
   const dayta = res.response;
   const filtered = dayta && dayta.filter( project => {
-    console.log("inputs.search ",inputs.search)
+   // console.log("inputs.search ",inputs.search)
     if(inputs.search !== undefined){
       return project.title.toLowerCase().includes(inputs.search.toLowerCase());
     }else{
@@ -26,6 +26,7 @@ const AdminDashboard = () => {
   }
 
   function updateStatus() {
+    console.log("inpuths ",inputs)
     fetch(`/api/user/project/`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
@@ -96,7 +97,7 @@ const AdminDashboard = () => {
                           <button
                             className="waves-effect waves-light btn"
                             onClick={handleInputChange}
-                            name="status"
+                            name="approved"
                             value={item._id}
                           >
                             <i className="material-icons left">check</i>
@@ -104,18 +105,12 @@ const AdminDashboard = () => {
                           </button>
                           <button
                             className="waves-effect waves-light btn"
-                            name="status"
-                            value={{ id: item._id, status: "Rejected" }}
+                            name="rejected"
+                            value={ item._id }
                             onClick={handleInputChange}
                           >
                             <i className="material-icons right">close</i>
                             Reject
-                          </button>
-                          <button
-                            className="waves-effect waves-light btn"
-                            type="submit"
-                          >
-                            Apply
                           </button>
                         </form>
                       </div>

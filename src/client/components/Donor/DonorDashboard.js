@@ -7,6 +7,15 @@ import useFetch from "../CustomHooks/useFetchHook";
 const DonorDashboard = () => {
   const { inputs, handleInputChange, handleSubmit } = useForm(saveData);
   const res = useFetch("/api/projects", {});
+  const dayta = res.response;
+  const filtered = dayta && dayta.filter( project => {
+    console.log("inputs.search ",inputs.search)
+    if(inputs.search !== undefined){
+      return project.title.toLowerCase().includes(inputs.search.toLowerCase());
+    }else{
+      return project;
+    }
+  });
 
   
   //console.log(res.response);
@@ -33,7 +42,7 @@ const DonorDashboard = () => {
   }
 
   // fetching from the database to the state
-  const dayta = res.response;
+  // const dayta = res.response;
   return (
     <div>
       <div>
